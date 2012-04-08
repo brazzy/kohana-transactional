@@ -25,12 +25,15 @@ Compatibility
 The module comes with a test application (see `tests` folder). These tests have been successfully run on the following configurations:
 
 * Windows 7 Home Premium 64 bit, running a XAMPP 1.7.7 installation consisting of PHP 5.3.8 and Apache 2.2.21
+	* Kohana 3.2.0
+		* MySQL 5.5
+		* PostgreSQL 9.1
+		* SqLite 3.7.3
 	* Kohana 3.1.4
 		* MySQL 5.5 and 5.1.53
 		* PostgreSQL 9.1
 		* SqLite 3.7.3
 
-	
 Caveats
 =======
 * The module is based on the assumption that all DB access which happens while serving one HTTP request should be in one transaction. In most cases, this works out just fine. If you need more fine-grained control, you have to use manual transaction management for those actions.
