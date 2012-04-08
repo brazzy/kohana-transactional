@@ -4,14 +4,14 @@ A module for the [Kohana PHP framework](http://kohanaframework.org/) that provid
 
 Actions that are declared to be transactional have all their DB access (including ORM-based) contained in one transaction, which is rolled back if the action results in an exception, and committed if it ends regularly or `die`/`exit` is called.
 
-Why should I use it?
-====================
+Why you should use it
+=====================
 Transactions are necessary to guarantee the consistency of the database. Managing them manually is tedious and error-prone. This module can make your entire application transactionally safe by adding a single line of code! 
 
-How do I use it?
-================
-
+How to use it
+=============
 After adding the module, simply add a public property named `_transactional` to your controller. It can have the following values:
+
 * `TRUE` makes all actions in that controller transactional
 * `FALSE` makes all actions non-transactional (can be used to override parent class setting)
 * An array containing the names of actions (without the `action_` prefix) makes exactly those actions transactional
@@ -20,6 +20,17 @@ So if you have a base class all your controllers inherit from, then making all y
 
 	public $_transactional = TRUE;
 
+Compatibility
+=============
+The module comes with a test application (see `tests` folder). These tests have been successfully run on the following configurations:
+
+* Windows 7 Home Premium 64 bit, running a XAMPP 1.7.7 installation consisting of PHP 5.3.8 and Apache 2.2.21
+	* Kohana 3.1.4
+		* MySQL 5.5 and 5.1.53
+		* PostgreSQL 9.1
+		* SqLite 3.7.3
+
+	
 Caveats
 =======
 * The module is based on the assumption that all DB access which happens while serving one HTTP request should be in one transaction. In most cases, this works out just fine. If you need more fine-grained control, you have to use manual transaction management for those actions.
