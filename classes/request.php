@@ -81,7 +81,14 @@ class Request extends Kohana_Request {
 	{
 		if($this->_transactional && !$this->_transaction_finished)
 		{
-			Database::instance()->commit();
+			if (function_exists('http_response_code') && http_response_code() >= 400) 
+			{
+				Database::instance()->rollback();
+			} 
+			else
+			{
+				Database::instance()->commit();
+			}
 			$this->_transaction_finished = true;
 		}		
 	}

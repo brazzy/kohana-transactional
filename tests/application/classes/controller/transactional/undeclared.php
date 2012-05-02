@@ -8,7 +8,7 @@ class Controller_Transactional_Undeclared extends Controller {
 		$this->response->body('success!');
 	}
 
-	public function action_fail()
+	public function action_exception()
 	{
 		DB::update('test')->set(array('changed' => 1))->execute();
 		throw new Exception("failure!");
@@ -19,4 +19,26 @@ class Controller_Transactional_Undeclared extends Controller {
 		DB::update('test')->set(array('changed' => 1))->execute();
 		die();
 	}
+
+	public function action_die301()
+	{
+		DB::update('test')->set(array('changed' => 1))->execute();
+		header("HTTP/1.0 301");
+		die();
+	}
+
+	public function action_die401()
+	{
+		DB::update('test')->set(array('changed' => 1))->execute();
+		header("HTTP/1.0 401");
+		die();
+	}
+
+	public function action_die500()
+	{
+		DB::update('test')->set(array('changed' => 1))->execute();
+		header("HTTP/1.0 500");
+		die();
+	}
+
 }
