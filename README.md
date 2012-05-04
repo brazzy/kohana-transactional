@@ -2,7 +2,7 @@ What's this?
 ============
 A module for the [Kohana PHP framework](http://kohanaframework.org/) that provides declarative transactions for controller actions, similar to the `@Transactional` annotation of the Spring framework in Java.
 
-Actions that are declared to be transactional have all their DB access (including ORM-based) contained in one transaction, which is rolled back if the action results in an exception, and committed if it ends regularly or `die`/`exit` is called.
+Actions that are declared to be transactional have all their DB access (including ORM-based) contained in one transaction, which is rolled back if the action results in an exception, and committed if it ends regularly or `die`/`exit` is called (for PHP 5.4 and greater, a HTTP response code >= 400 triggers a rollback instead).
 
 Why you should use it
 =====================
@@ -34,8 +34,13 @@ The module comes with a test application (see `tests` folder). These tests have 
 		* PostgreSQL 9.1
 		* SqLite 3.7.3
 
+* Windows 7 Home Premium 64 bit, running a XAMPP 1.8b3 installation consisting of PHP 5.4.0 and Apache 2.4.1
+	* Kohana 3.2.0
+		* MySQL 5.5
+
 Caveats
 =======
 * The module is based on the assumption that all DB access which happens while serving one HTTP request should be in one transaction. In most cases, this works out just fine. If you need more fine-grained control, you have to use manual transaction management for those actions.
-* Transactions are committed in a shutdown function when `die` or `exit` is called (necessary since Kohana does that after redirecting a request). If your application uses `die` or `exit` for error conditions, transactions will not be rolled back - so use exceptions instead.
+* In PHP versions prior to 5.3, transactions are always committed in a shutdown function when `die` or `exit` is called (necessary since Kohana does that after redirecting a request). If your application uses `die` or `exit` for error conditions, transactions will not be rolled back - so use exceptions instead.
+* PHP 5.4 introduces the `http_response_code()` function which allows more sophisticated behaviour: Response codes smaller than 400 cause a commit, 400 or greater causes a rollback.
 * Obviously, it only works with DB engines that support transactions (i.e. not MyISAM).

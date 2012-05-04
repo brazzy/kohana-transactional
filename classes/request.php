@@ -3,7 +3,8 @@
 /**
  * Implement declarative transactions. Controller actions marked as transactional are executed 
  * inside a transaction, which is rolled back if there is an uncaught exception. Using die() or exit()
- * will still have the transaciton committed.
+ * will still have the transaciton committed unless a HTTP response code >= 400 is set and the PHP
+ * installation supports the http_response_code() function (present in PHP 5.4)
  * 
  * The behaviour can be configured by adding a public property '_transactional' to a controller, which
  * is either true or false (affects all actions) or contains an array with the names (minus
