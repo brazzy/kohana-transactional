@@ -15,6 +15,7 @@ After adding the module, simply add a public property named `_transactional` to 
 * `TRUE` makes all actions in that controller transactional
 * `FALSE` makes all actions non-transactional (can be used to override parent class setting)
 * An array containing the names of actions (without the `action_` prefix) makes exactly those actions transactional
+* the setting can be inherited and (if necessary) overridden in subclasses
 
 So if you have a base class all your controllers inherit from, then making all your actions transactional is a matter of adding this single line:
 
@@ -41,6 +42,6 @@ The module comes with a test application (see `tests` folder). These tests have 
 Caveats
 =======
 * The module is based on the assumption that all DB access which happens while serving one HTTP request should be in one transaction. In most cases, this works out just fine. If you need more fine-grained control, you have to use manual transaction management for those actions.
-* In PHP versions prior to 5.3, transactions are always committed in a shutdown function when `die` or `exit` is called (necessary since Kohana does that after redirecting a request). If your application uses `die` or `exit` for error conditions, transactions will not be rolled back - so use exceptions instead.
-* PHP 5.4 introduces the `http_response_code()` function which allows more sophisticated behaviour: Response codes smaller than 400 cause a commit, 400 or greater causes a rollback.
 * Obviously, it only works with DB engines that support transactions (i.e. not MyISAM).
+* In PHP versions up to 5.3, transactions are always committed in a shutdown function when `die` or `exit` is called (necessary since Kohana does that after redirecting a request). If your application uses `die` or `exit` for error conditions, transactions will still be committed - so use exceptions instead.
+* PHP 5.4 introduces the `http_response_code()` function which allows more sophisticated behaviour: Response codes smaller than 400 cause a commit, 400 or greater causes a rollback. This allows the use of `die` or `exit` for error conditions, if an appropriate HTTP response code is set.
