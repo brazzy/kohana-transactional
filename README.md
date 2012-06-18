@@ -43,5 +43,6 @@ Caveats
 =======
 * The module is based on the assumption that all DB access which happens while serving one HTTP request should be in one transaction. In most cases, this works out just fine. If you need more fine-grained control, you have to use manual transaction management for those actions.
 * Obviously, it only works with DB engines that support transactions (i.e. not MyISAM).
-* In PHP versions up to 5.3, transactions are always committed in a shutdown function when `die` or `exit` is called (necessary since Kohana does that after redirecting a request). If your application uses `die` or `exit` for error conditions, transactions will still be committed - so use exceptions instead.
+* Transaction commits happen in a shutdown function (so that transactions can be committed even when `die` or `exit` is called, which Kohana does after redirecting a request). If your application uses shutdown functions to do DB queries, those will not be part of the transaction (and may get rolled back).
+* In PHP versions up to 5.3, transactions are always committed when `die` or `exit` is called. If your application uses `die` or `exit` for error conditions, transactions will still be committed - so use exceptions instead.
 * PHP 5.4 introduces the `http_response_code()` function which allows more sophisticated behaviour: Response codes smaller than 400 cause a commit, 400 or greater causes a rollback. This allows the use of `die` or `exit` for error conditions, if an appropriate HTTP response code is set.
