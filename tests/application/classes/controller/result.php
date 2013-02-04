@@ -78,7 +78,7 @@ class Controller_Result extends Controller {
 	
 	private function test($controller, $action, $responseCode_expected, $dbChange_expected, $use_response_code=false){
 	
-		$url = url::site("$controller/$action");
+		$url = url::site("$controller/$action", TRUE);
 
 		$test = new stdClass;
 		$test->controller = $controller;
