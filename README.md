@@ -23,21 +23,28 @@ So if you have a base class all your controllers inherit from, then making all y
 
 Compatibility
 =============
-The module comes with a test application (see `tests` folder). These tests have been successfully run on the following configurations:
+The module comes with a test application (see `tests` folder). These tests have been successfully run on the following configuration:
 
-* Windows 7 Home Premium 64 bit, running a XAMPP 1.7.7 installation consisting of PHP 5.3.8 and Apache 2.2.21
-	* Kohana 3.2.0
-		* MySQL 5.5
-		* PostgreSQL 9.1
-		* SqLite 3.7.3
-	* Kohana 3.1.4
-		* MySQL 5.5 and 5.1.53
-		* PostgreSQL 9.1
-		* SqLite 3.7.3
+* Kohana 3.3.0, 3.2.0 and 3.1.4
+* Windows 7 Home Premium 64 bit
+* a XAMPP 1.81 installation consisting of PHP 5.4.7 and Apache 2.4.3
+* MySQL 5.5.27
 
-* Windows 7 Home Premium 64 bit, running a XAMPP 1.8b3 installation consisting of PHP 5.4.0 and Apache 2.4.1
-	* Kohana 3.2.0
-		* MySQL 5.5
+A previous version was tested against:
+
+* Windows 7 Home Premium 64 bit
+	* a XAMPP 1.7.7 installation consisting of PHP 5.3.8 and Apache 2.2.21
+		* Kohana 3.2.0
+			* MySQL 5.5
+			* PostgreSQL 9.1
+			* SqLite 3.7.3
+		* Kohana 3.1.4
+			* MySQL 5.5 and 5.1.53
+			* PostgreSQL 9.1
+			* SqLite 3.7.3
+	* a XAMPP 1.8b3 installation consisting of PHP 5.4.0 and Apache 2.4.1
+		* Kohana 3.2.0
+			* MySQL 5.5
 
 Caveats
 =======
