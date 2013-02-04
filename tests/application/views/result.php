@@ -12,6 +12,11 @@ td.fail{
 </head>
 <body>
 <h1>Kohana Transactional Module Test Results</h1>
+<ul>
+<li>Kohana <?php echo Kohana::VERSION ?></li>
+<li>PHP <?php echo phpversion () ?></li>
+<li><?php echo apache_get_version() ?></li>
+</ul>
 <?php if (!function_exists('http_response_code')) { ?>
 <p>
 Note: Tests marked with '?' rely on the function <a href="http://www.php.net/manual/en/function.http-response-code.php"><code>http_response_code()</code></a>, which is not present in your version of PHP.
