@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
  * Implement declarative transactions. Controller actions marked as transactional are executed 
@@ -15,16 +15,16 @@
  * @author MBorgwardt
  *
  */
-class Transactional_Request extends Kohana_Request {
+class Transactional_Request_Client_Internal extends Kohana_Request_Client_Internal {
 	private $_transactional = false;
 	private $_transaction_finished = false;
 	
-	public function execute()
+	public function execute(Request $request)
 	{
 		// Code to get controller instance copied from Kohana_Request_Client_Internal
-		$prefix = 'controller_';
-		$directory = $this->directory();
-		$controller = $this->controller();		
+		$prefix = 'Controller_';
+		$directory = $request->directory();
+		$controller = $request->controller();		
 		if ($directory)
 		{
 			$prefix .= str_replace(array('\\', '/'), '_', trim($directory, '/')).'_';
@@ -32,7 +32,7 @@ class Transactional_Request extends Kohana_Request {
 		if ( ! class_exists($prefix.$controller))
 		{
 			throw new HTTP_Exception_404('The requested URL :uri was not found on this server.',
-			array(':uri' => $this->uri()));
+			array(':uri' => $request->uri()));
 		}
 		$class = new ReflectionClass($prefix.$controller);		
 		if ($class->isAbstract())
@@ -40,13 +40,15 @@ class Transactional_Request extends Kohana_Request {
 			throw new Kohana_Exception('Cannot create instances of abstract :controller',
 			array(':controller' => $prefix.$controller));
 		}
-		$controller = $class->newInstance($this, $this->response() ? $this->response() : $this->create_response());
+		Kohana::$log->add(Log::ERROR, $prefix.$controller);
+		Kohana::$log->write();
+		$controller = $class->newInstance($request, Response::factory());
 		
 		if(property_exists($controller, '_transactional'))
 		{
 			if(is_array($controller->_transactional))
 			{
-				$this->_transactional = in_array($this->_action, $controller->_transactional);
+				$this->_transactional = in_array($request->action(), $controller->_transactional);
 			}
 			else
 			{
@@ -65,7 +67,7 @@ class Transactional_Request extends Kohana_Request {
 		
 		try
 		{
-			return parent::execute();
+			return parent::execute($request);
 		}
 		catch (Exception $e)
 		{
@@ -77,20 +79,23 @@ class Transactional_Request extends Kohana_Request {
 			throw $e;
 		}
 	}
-	
+
 	public function commit()
 	{
 		if($this->_transactional && !$this->_transaction_finished)
 		{
 			if (function_exists('http_response_code') && http_response_code() >= 400) 
 			{
+				Kohana::$log->add(Log::ERROR, 'rollback');
 				Database::instance()->rollback();
 			} 
 			else
 			{
+				Kohana::$log->add(Log::ERROR, 'commit');
 				Database::instance()->commit();
 			}
 			$this->_transaction_finished = true;
+			Kohana::$log->write();
 		}		
-	}
+	}	
 }
