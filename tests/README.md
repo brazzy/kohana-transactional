@@ -1,6 +1,6 @@
 Test application for the Transactional module
 =============================================
-Since the module relies on shutdown functions and overrides a core framework class (Request), it cannot be usefully tested using regular PHPUnit tests. Instead, it's necessary to create a test application.
+Since the module relies on shutdown functions and overrides a core framework class (Request_Client_Internal), it cannot be usefully tested using regular PHPUnit tests. Instead, it's necessary to create a test application.
 
 How to test
 ===========
