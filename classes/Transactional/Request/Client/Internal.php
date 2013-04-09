@@ -40,8 +40,6 @@ class Transactional_Request_Client_Internal extends Kohana_Request_Client_Intern
 			throw new Kohana_Exception('Cannot create instances of abstract :controller',
 			array(':controller' => $prefix.$controller));
 		}
-		Kohana::$log->add(Log::ERROR, $prefix.$controller);
-		Kohana::$log->write();
 		$controller = $class->newInstance($request, Response::factory());
 		
 		if(property_exists($controller, '_transactional'))
@@ -86,12 +84,12 @@ class Transactional_Request_Client_Internal extends Kohana_Request_Client_Intern
 		{
 			if (function_exists('http_response_code') && http_response_code() >= 400) 
 			{
-				Kohana::$log->add(Log::ERROR, 'rollback');
+				Kohana::$log->add(Log::WARNING, 'rollback');
 				Database::instance()->rollback();
 			} 
 			else
 			{
-				Kohana::$log->add(Log::ERROR, 'commit');
+				Kohana::$log->add(Log::NOTICE, 'commit');
 				Database::instance()->commit();
 			}
 			$this->_transaction_finished = true;
